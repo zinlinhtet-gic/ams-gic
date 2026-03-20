@@ -16,10 +16,14 @@ class checkSubDomain
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $host = $request->getHost();
+        $tenantHost = $request->header('X-Tenant-Host');
 
-        // a1.pos.hehe.com -> a1
-        $subdomain = explode('.', $host)[0];
+        if (!$tenantHost) {
+            abort(400, 'Tenant host missing');
+        }
+
+        $parts = explode('.', $tenantHost);
+        $subdomain = $parts[0] ?? null;
 
         $tenant = ClientTenant::where('subdomain', $subdomain)->first();
 
