@@ -5,6 +5,7 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios';
+import { getSubdomain } from '../Routers/domain';
 
 export interface JwtSession<TUser = unknown> {
   accessToken: string;
@@ -37,7 +38,7 @@ export abstract class BaseApi {
 
   protected readonly http: AxiosInstance;
 
-  protected constructor(config: BaseApiConfig = {}) {
+  public constructor(config: BaseApiConfig = {}) {
     if (config.authStorageKey) {
       BaseApi.setAuthStorageKey(config.authStorageKey);
     }
@@ -49,7 +50,7 @@ export abstract class BaseApi {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        'X-Tenant-Host': this.getTenantHost(),
+        'X-Tenant-Host': getSubdomain(),
         ...config.headers,
       },
     });
@@ -205,10 +206,6 @@ export abstract class BaseApi {
     BaseApi.clearSession();
   }
 
-  private getTenantHost(): string {
-    return window.location.hostname;
-  }
-
 
   private attachAuthorizationHeader(
     requestConfig: InternalAxiosRequestConfig
@@ -219,6 +216,7 @@ export abstract class BaseApi {
     }
 
     const headers = AxiosHeaders.from(requestConfig.headers);
+    headers.set('X-Tenant-Host', getSubdomain());
     if (!headers.has('Authorization')) {
       const tokenType = session.tokenType ?? 'Bearer';
       headers.set('Authorization', `${tokenType} ${session.accessToken}`);

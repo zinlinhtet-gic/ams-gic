@@ -1,1 +1,2 @@
-export * from './ApplicantManagementApi.tsx';
+export * from './ApplicantManagementApi.tsx';   
+export * from './TenantApi.tsx';

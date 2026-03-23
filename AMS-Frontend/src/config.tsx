@@ -1,0 +1,1 @@
+export const hasSubDomain: boolean = false; // Set to false for development without subdomains
