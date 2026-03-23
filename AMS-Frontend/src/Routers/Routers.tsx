@@ -63,32 +63,33 @@ function RouterContent() {
   if(hasSubDomain === false) {
     return (
       <Routes>
+        <Route path="/404" element={<NotFoundPage />} />
         {/* Admin routes */}
         <Route path="/admin" element={<SuperAdminRoutes />}>
             <Route element={<GuestRoutes />}>
-            <Route path="/login" element={<AdminLoginPage />} />
+            <Route path="login" element={<AdminLoginPage />} />
             </Route>
 
             <Route element={<ProtectedRoutes />}>
-            <Route path="/" element={<AdminDashboardPage />} />
-            <Route path="/dashboard" element={<AdminDashboardPage />} />
-            <Route path="/clients" element={<ClientManagementPage />} />
+            <Route path="" element={<AdminDashboardPage />} />
+            <Route path="dashboard" element={<AdminDashboardPage />} />
+            <Route path="clients" element={<ClientManagementPage />} />
             </Route>
         </Route>
         {/* Tenant routes */}
         <Route path="*" element={<TenantRoutes />}>
             <Route element={<GuestRoutes />}>
-            <Route path="/login" element={<TenantLoginPage />} />
+            <Route path="login" element={<TenantLoginPage />} />
             </Route>
 
             <Route element={<ProtectedRoutes />}>
-            <Route path="/" element={<TenantDashboardPage />} />
-            <Route path="/dashboard" element={<TenantDashboardPage />} />
-            <Route path="/products" element={<ProductPage />} />
+            <Route path="" element={<TenantDashboardPage />} />
+            <Route path="dashboard" element={<TenantDashboardPage />} />
+            <Route path="products" element={<ProductPage />} />
             </Route>
         </Route>
 
-        <Route path="/404" element={<NotFoundPage />} />
+        
       </Routes>
     );
   }
